@@ -46,17 +46,20 @@ void	ft_putnbr(int nb)
 
 int		is_prime(int nb)
 {
-	int i;
+	int	i;
 
-	i = 2;
 	if (nb <= 1)
 		return (0);
-	while (i <= (nb / 2))
+	if (nb == 2)
+		return (1);
+	if (nb % 2 == 0)
+		return (0);
+	i = 3;
+	while (i * i <= nb)
 	{
-		if (!(nb % i))
+		if(nb % i == 0)
 			return (0);
-		else
-			i += 1;
+		i += 2;
 	}
 	return (1);
 }

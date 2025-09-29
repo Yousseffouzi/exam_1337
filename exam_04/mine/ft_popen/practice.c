@@ -1,26 +1,38 @@
-#include "unistd.h"
-#include "stdio.h"
-#include "stdlib.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   practice.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yofouzi <yofouzi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/29 08:51:47 by yofouzi           #+#    #+#             */
+/*   Updated: 2025/09/29 09:43:18 by yofouzi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 int ft_popen(const char *file, char *const argv[], char type)
 {
+    int pid = 0;
     int fd[2];
-    int pid;
-
-    if (!file || !argv || !argv[0] || (type != 'r' && type != 'w'))
+    
+    if(!file || !argv || !argv[0] || (type != 'r' && type != 'w'))
         return (-1);
-    if (pipe(fd) == -1)
+    if(pipe(fd) == -1)
         return (-1);
     pid = fork();
-    if (pid == -1)
+    if(pid == -1)
     {
         close(fd[0]);
         close(fd[1]);
         return (-1);
     }
-    if (pid == 0)
+    if(pid == 0)
     {
-        if (type == 'r')
+        if(type == 'r')
         {
             close(fd[0]);
             dup2(fd[1], STDOUT_FILENO);
@@ -37,18 +49,18 @@ int ft_popen(const char *file, char *const argv[], char type)
     }
     else
     {
-        if (type == 'r')
+        if(type == 'r')
         {
             close(fd[1]);
-            return(fd[0]);
+            return (fd[0]);
         }
         else
         {
             close(fd[0]);
-            return(fd[1]);
+            return (fd[1]);
         }
     }
-    return(-1);
+    return (0);
 }
 
 // int main(void)
@@ -80,15 +92,15 @@ int ft_popen(const char *file, char *const argv[], char type)
 // }
 
 // write
-#include <string.h>
-int main(void)
-{
-    int fd = ft_popen("wc", (char *const []){"wc", "-c", NULL}, 'w');
-    char *msg = "Hello from ft_popen with type 'w'!\n";
-    write(fd, msg, strlen(msg));
-    close(fd);
-    return 0;
-}
+// #include <string.h>
+// int main(void)
+// {
+//     int fd = ft_popen("wc", (char *const []){"wc", "-c", NULL}, 'w');
+//     char *msg = "Hello from ft_popen with type 'w'!\n";
+//     write(fd, msg, strlen(msg));
+//     close(fd);
+//     return 0;
+// }
 
 // int main(void)
 // {

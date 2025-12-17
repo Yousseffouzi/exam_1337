@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vbc9.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yofouzi <yofouzi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yofouzi <yofouzi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 17:08:09 by mdahani           #+#    #+#             */
-/*   Updated: 2025/09/29 10:03:21 by yofouzi          ###   ########.fr       */
+/*   Updated: 2025/12/03 06:21:22 by yofouzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int eval_tree(node *tree)
     return (0);
 }
 
-node *parse_expr(char **s) {
+node *parse_expr(char **s) 
+{
     node *left = parse_term(s);
     if (!left)
         return (NULL);
@@ -113,7 +114,8 @@ node *parse_expr(char **s) {
     return (left);
 }
 
-node *parse_factor(char **s) {
+node *parse_factor(char **s) 
+{
     if (isdigit(**s)) {
         node n = {VAL, **s - '0', NULL, NULL};
         (*s)++;
@@ -131,7 +133,8 @@ node *parse_factor(char **s) {
     return (NULL);
 }
 
-node *parse_term(char **s) {
+node *parse_term(char **s) 
+{
     node *left = parse_factor(s);
     if (!left)
         return (NULL);

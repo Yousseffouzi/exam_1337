@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   vbc9_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsilva-x <lsilva-x@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yofouzi <yofouzi@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 17:05:43 by lsilva-x          #+#    #+#             */
-/*   Updated: 2025/08/04 17:05:43 by lsilva-x         ###   ########.fr       */
+/*   Updated: 2025/12/03 06:18:48 by yofouzi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void    destroy_tree(node *n)
 {
     if (!n)
         return ;
-	//!this condition referest to the fact of VAl are leaf nodes and they don't had childrens
+	//!this condition referest to the fact of VAl are leaf nodes and they don't have childrens
     if (n->type != VAL) 
     {
         destroy_tree(n->l); //? Recursively destroy the left nodes
-        destroy_tree(n->r); //? Recursively destroy the left nodes
+        destroy_tree(n->r); //? Recursively destroy the right nodes
     }
     free(n);
 }

@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 
 
-#define pic picoshell
+#define pic picoshell5
 
 
 #define GREEN "\033[0;32m"
@@ -40,4 +40,5 @@ int picoshell6(char **cmds[]);
 int picoshell7(char **cmds[]);
 int picoshell8(char **cmds[]);
 int picoshell(char **cmds[]);
+int picoshella(char **cmds[]);
 

@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/Youssef/Desktop/exam_05/Bigint",
-      "program": "/home/Youssef/Desktop/exam_05/Bigint/build/Debug/outDebug",
+      "cwd": "/home/Youssef/Desktop/exam_05/BigInt",
+      "program": "/home/Youssef/Desktop/exam_05/BigInt/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

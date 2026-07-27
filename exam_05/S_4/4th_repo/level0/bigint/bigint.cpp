@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bigint.cpp                                         :+:      :+:    :+:   */
+/*   BigInt.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fatkeski <fatkeski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bigint.hpp"
+#include "BigInt.hpp"
 
-bigint::bigint()
+BigInt::BigInt()
 {
 	this->str = "0";
 }
 
-bigint::bigint(unsigned int num)
+BigInt::BigInt(unsigned int num)
 {
 	std::stringstream ss;
 	ss << num;
@@ -25,12 +25,12 @@ bigint::bigint(unsigned int num)
 	// std::cout << "str: " << str << std::endl;
 }
 
-bigint::bigint(const bigint& source)
+BigInt::BigInt(const BigInt& source)
 {
 	(*this) = source;
 }
 
-bigint& bigint::operator=(const bigint& source)
+BigInt& BigInt::operator=(const BigInt& source)
 {
 	if(this == &source)
 		return(*this);
@@ -38,7 +38,7 @@ bigint& bigint::operator=(const bigint& source)
 	return(*this);
 }
 
-std::string bigint::getStr() const
+std::string BigInt::getStr() const
 {
 	return(this->str);
 }
@@ -53,7 +53,7 @@ std::string reverse(const std::string& str)
 	return(revStr);
 }
 
-std::string addition(const bigint& obj1, const bigint& obj2)
+std::string addition(const BigInt& obj1, const BigInt& obj2)
 {
 	std::string str1 = reverse(obj1.getStr());
 	std::string str2 = reverse(obj2.getStr());
@@ -105,9 +105,9 @@ std::string addition(const bigint& obj1, const bigint& obj2)
 	return(reverse(result));
 }
 
-bigint bigint::operator+(const bigint& other)const
+BigInt BigInt::operator+(const BigInt& other)const
 {
-	bigint temp(other);
+	BigInt temp(other);
 	temp.str.clear();
 	std::string result = addition(*this, other);
 	temp.str = result;
@@ -116,38 +116,38 @@ bigint bigint::operator+(const bigint& other)const
 	return(temp);
 }
 
-bigint& bigint::operator+=(const bigint& other)
+BigInt& BigInt::operator+=(const BigInt& other)
 {
 	(*this) = (*this) + other;
 	return(*this);
 }
 
-bigint& bigint::operator++()
+BigInt& BigInt::operator++()
 {
-	*(this) = *(this) + bigint(1);
+	*(this) = *(this) + BigInt(1);
 	return(*this);
 }
 
-bigint bigint::operator++(int)
+BigInt BigInt::operator++(int)
 {
-	bigint temp = (*this);
-	*(this) = *(this) + bigint(1);
+	BigInt temp = (*this);
+	*(this) = *(this) + BigInt(1);
 	return(temp);
 }
 
 
-bigint bigint::operator<<(unsigned int n)const
+BigInt BigInt::operator<<(unsigned int n)const
 {
-	bigint temp = *this;
+	BigInt temp = *this;
 
 	temp.str.insert(temp.str.end(), n, '0');
 	//std::cout << temp.str << std::endl;
 	return(temp);
 }
 
-bigint bigint::operator>>(unsigned int n)const
+BigInt BigInt::operator>>(unsigned int n)const
 {
-	bigint temp = *this;
+	BigInt temp = *this;
 	size_t len = temp.str.length();
 	if(n >= len)
 		temp.str = "0";
@@ -158,13 +158,13 @@ bigint bigint::operator>>(unsigned int n)const
 	return(temp);
 }
 
-bigint& bigint::operator<<=(unsigned int n)
+BigInt& BigInt::operator<<=(unsigned int n)
 {
 	(*this) = (*this) << n;
 	return(*this);
 }
 
-bigint& bigint::operator>>=(unsigned int n)
+BigInt& BigInt::operator>>=(unsigned int n)
 {
 	(*this) = (*this) >> n;
 	return(*this);
@@ -178,46 +178,46 @@ unsigned int stringToUINT(std::string str)
 	return (res);
 }
 
-bigint bigint::operator<<(const bigint& other)const
+BigInt BigInt::operator<<(const BigInt& other)const
 {
-	bigint temp;
+	BigInt temp;
 	temp = (*this) << stringToUINT(other.str);
 	return(temp);
 }
 
-bigint bigint::operator>>(const bigint& other)const
+BigInt BigInt::operator>>(const BigInt& other)const
 {
-	bigint temp;
+	BigInt temp;
 	temp = (*this) >> stringToUINT(other.str);
 	return(temp);
 }
 
-bigint& bigint::operator<<=(const bigint& other)
+BigInt& BigInt::operator<<=(const BigInt& other)
 {
 	(*this) = (*this) << stringToUINT(other.str);
 	return(*this);
 }
 
-bigint& bigint::operator>>=(const bigint& other)
+BigInt& BigInt::operator>>=(const BigInt& other)
 {
 	(*this) = (*this) >> stringToUINT(other.str);
 	return(*this);
 }
 
 
-bool bigint::operator==(const bigint& other) const
+bool BigInt::operator==(const BigInt& other) const
 {
 	if(this->getStr() == other.getStr())
 		return(true);
 	return(false);
 }
 
-bool bigint::operator!=(const bigint& other) const
+bool BigInt::operator!=(const BigInt& other) const
 {
 	return(!((*this) == (other)));
 }
 
-bool bigint::operator<(const bigint& other) const
+bool BigInt::operator<(const BigInt& other) const
 {
 	std::string str1 = this->str;
 	std::string str2 = other.getStr();
@@ -229,23 +229,23 @@ bool bigint::operator<(const bigint& other) const
 	return(str1 < str2);  // thanks for your feedback, mjuicha!! o7
 }
 
-bool bigint::operator>(const bigint& other) const
+bool BigInt::operator>(const BigInt& other) const
 {
 	return(!(((*this) < other)));
 }
 
-bool bigint::operator<=(const bigint& other) const
+bool BigInt::operator<=(const BigInt& other) const
 {
 	return((((*this) < other) || ((*this) == other)));
 }
 
-bool bigint::operator>=(const bigint& other) const
+bool BigInt::operator>=(const BigInt& other) const
 {
 	return((((*this) > other) || ((*this) == other)));
 }
 
 // non member func
-std::ostream& operator<<(std::ostream& output, const bigint& obj)
+std::ostream& operator<<(std::ostream& output, const BigInt& obj)
 {
 	output << obj.getStr();
 	return(output);

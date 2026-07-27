@@ -3,17 +3,17 @@
 #include <string>
 #include <algorithm>
 
-class bigint {
+class BigInt {
 private:
     std::string num;
 
 public:
-    bigint(size_t n) : num(std::to_string(n)) {}
-    bigint() : num("0") {}
+    BigInt(size_t n) : num(std::to_string(n)) {}
+    BigInt() : num("0") {}
 
-    bigint(const bigint& oth) : num(oth.num) {}
+    BigInt(const BigInt& oth) : num(oth.num) {}
 
-    bigint(const std::string& n) {
+    BigInt(const std::string& n) {
         if (n.empty() || !std::all_of(n.begin(), n.end(), ::isdigit) || (n.size() > 1 && n[0] == '0')) {
             std::cout << "Invalid number string" << std::endl;
             num = "0";
@@ -22,7 +22,7 @@ public:
             num = n;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const bigint& b) {
+    friend std::ostream& operator<<(std::ostream& os, const BigInt& b) {
         return os << b.num;
     }
 
@@ -42,39 +42,39 @@ public:
         return result;
     }
 
-    bigint operator+(const bigint& oth) const {
-        return bigint(add_strings(num, oth.num));
+    BigInt operator+(const BigInt& oth) const {
+        return BigInt(add_strings(num, oth.num));
     }
 
-    bigint& operator+=(const bigint& oth) {
+    BigInt& operator+=(const BigInt& oth) {
         num = add_strings(num, oth.num);
         return *this;
     }
 
-    bigint& operator++() {
-        return *this += bigint(1);
+    BigInt& operator++() {
+        return *this += BigInt(1);
     }
 
-    bigint operator++(int) {
-        bigint tmp(*this);
+    BigInt operator++(int) {
+        BigInt tmp(*this);
         ++(*this);
         return tmp;
     }
 
-    bigint operator<<(size_t shift) const {
-        return bigint(num + std::string(shift, '0'));
+    BigInt operator<<(size_t shift) const {
+        return BigInt(num + std::string(shift, '0'));
     }
 
-    bigint& operator<<=(size_t shift) {
+    BigInt& operator<<=(size_t shift) {
         num += std::string(shift, '0');
         return *this;
     }
 
-    bigint& operator>>=(const bigint& b) {
-        if (bigint(num.size()) <= b)
+    BigInt& operator>>=(const BigInt& b) {
+        if (BigInt(num.size()) <= b)
             num = "0";
         else {
-            bigint i(0);
+            BigInt i(0);
             while (i < b) {
                 num = num.substr(0, num.size() - 1);
                 ++i;
@@ -83,7 +83,7 @@ public:
         return *this;
     }
 
-    bool operator<(const bigint& oth) const {
+    bool operator<(const BigInt& oth) const {
         if (num.size() < oth.num.size())
             return 1;
         else if (num.size() > oth.num.size())
@@ -91,29 +91,29 @@ public:
         return num < oth.num;
     }
 
-    bool operator>(const bigint& oth) const {
+    bool operator>(const BigInt& oth) const {
         return oth < *this;
     }
 
-    bool operator==(const bigint& oth) const {
+    bool operator==(const BigInt& oth) const {
         return num == oth.num;
     }
 
-    bool operator!=(const bigint& oth) const {
+    bool operator!=(const BigInt& oth) const {
         return num != oth.num;
     }
 
-    bool operator<=(const bigint& oth) const {
+    bool operator<=(const BigInt& oth) const {
         return !(*this > oth);
     }
 
-    bool operator>=(const bigint& oth) const {
+    bool operator>=(const BigInt& oth) const {
         return !(*this < oth);
     }
 
     // step 6: extra test
-    bigint operator-(const bigint& oth) const {
+    BigInt operator-(const BigInt& oth) const {
         (void) oth;
-        return bigint();
+        return BigInt();
     }
 };

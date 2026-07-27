@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-class bigint
+class BigInt
 {
     private:
         std::string digits;
@@ -12,32 +12,32 @@ class bigint
         bool checkDigits(const std::string& s) const;
         
     public:
-        bigint();
-        bigint(unsigned int nbr);
-        bigint(const std::string& nbr);
+        BigInt();
+        BigInt(unsigned int nbr);
+        BigInt(const std::string& nbr);
         
-        bigint operator+(const bigint& other) const;
-        bigint& operator+=(const bigint& other);
+        BigInt operator+(const BigInt& other) const;
+        BigInt& operator+=(const BigInt& other);
         
-        bool operator==(const bigint& other) const;
-        bool operator!=(const bigint& other) const;
-        bool operator<(const bigint& other) const;
-        bool operator>(const bigint& other) const;
-        bool operator<=(const bigint& other) const;
-        bool operator>=(const bigint& other) const;
+        bool operator==(const BigInt& other) const;
+        bool operator!=(const BigInt& other) const;
+        bool operator<(const BigInt& other) const;
+        bool operator>(const BigInt& other) const;
+        bool operator<=(const BigInt& other) const;
+        bool operator>=(const BigInt& other) const;
         
-        bigint operator<<(unsigned int shift) const;
-        bigint operator>>(unsigned int shift) const;
-        bigint& operator<<=(unsigned int shift);
-        bigint& operator>>=(unsigned int shift);
+        BigInt operator<<(unsigned int shift) const;
+        BigInt operator>>(unsigned int shift) const;
+        BigInt& operator<<=(unsigned int shift);
+        BigInt& operator>>=(unsigned int shift);
 
-        bigint& operator<<=(const bigint& shift);
-        bigint& operator>>=(const bigint& shift);
+        BigInt& operator<<=(const BigInt& shift);
+        BigInt& operator>>=(const BigInt& shift);
         
-        bigint& operator++();
-        bigint operator++(int);
+        BigInt& operator++();
+        BigInt operator++(int);
         
         std::string getDigits() const;
 };
 
-std::ostream& operator<<(std::ostream& out, const bigint& nbr);
+std::ostream& operator<<(std::ostream& out, const BigInt& nbr);

@@ -1,10 +1,10 @@
-#include "bigint.hpp"
+#include "BigInt.hpp"
 #include <sstream>
 #include <algorithm>
 
-bigint::bigint() : digits("0") {}
+BigInt::BigInt() : digits("0") {}
 
-bigint::bigint(unsigned int nbr)
+BigInt::BigInt(unsigned int nbr)
 {
     if(nbr == 0)
     {
@@ -20,7 +20,7 @@ bigint::bigint(unsigned int nbr)
     }
 }
 
-bigint::bigint(const std::string& nbr)
+BigInt::BigInt(const std::string& nbr)
 {
     if(!checkDigits(nbr))
         digits = "0";
@@ -32,7 +32,7 @@ bigint::bigint(const std::string& nbr)
     }
 }
 
-bool bigint::checkDigits(const std::string& s) const
+bool BigInt::checkDigits(const std::string& s) const
 {
     if(s.empty())
         return false;
@@ -45,12 +45,12 @@ bool bigint::checkDigits(const std::string& s) const
     return true;
 }
 
-bool bigint::isZero() const
+bool BigInt::isZero() const
 {
     return digits == "0";
 }
 
-void bigint::removeZeros()
+void BigInt::removeZeros()
 {
     if(digits.empty())
     {
@@ -64,7 +64,7 @@ void bigint::removeZeros()
     digits = digits.substr(0, i+1);
 }
 
-std::string bigint::addStrs(const std::string& a, const std::string& b) const
+std::string BigInt::addStrs(const std::string& a, const std::string& b) const
 {
     std::string res;
     int carry = 0;
@@ -82,38 +82,38 @@ std::string bigint::addStrs(const std::string& a, const std::string& b) const
     return res;
 }
 
-bigint bigint::operator+(const bigint& other) const
+BigInt BigInt::operator+(const BigInt& other) const
 {
-    bigint res = *this;
+    BigInt res = *this;
     res.digits = addStrs(digits, other.digits);
     res.removeZeros();
     return res;
 }
 
-bigint& bigint::operator+=(const bigint& other)
+BigInt& BigInt::operator+=(const BigInt& other)
 {
     digits = addStrs(digits, other.digits);
     removeZeros();
     return *this;
 }
 
-bool bigint::operator==(const bigint& other) const
+bool BigInt::operator==(const BigInt& other) const
 {
-    bigint a = *this, b = other;
+    BigInt a = *this, b = other;
 
     a.removeZeros();
     b.removeZeros();
     return a.digits == b.digits;
 }
 
-bool bigint::operator!=(const bigint& other) const
+bool BigInt::operator!=(const BigInt& other) const
 {
     return !(*this == other);
 }
 
-bool bigint::operator<(const bigint& other) const
+bool BigInt::operator<(const BigInt& other) const
 {
-    bigint a = *this, b = other;
+    BigInt a = *this, b = other;
 
     a.removeZeros();
     b.removeZeros();
@@ -129,37 +129,37 @@ bool bigint::operator<(const bigint& other) const
     return false;
 }
 
-bool bigint::operator>(const bigint& other) const
+bool BigInt::operator>(const BigInt& other) const
 {
     return other < *this;
 }
 
-bool bigint::operator<=(const bigint& other) const
+bool BigInt::operator<=(const BigInt& other) const
 {
     return !(*this > other);
 }
 
-bool bigint::operator>=(const bigint& other) const
+bool BigInt::operator>=(const BigInt& other) const
 {
     return !(*this < other);
 }
 
-bigint bigint::operator<<(unsigned int shift) const
+BigInt BigInt::operator<<(unsigned int shift) const
 {
     if(isZero() || shift == 0)
         return *this;
-    bigint res = *this;
+    BigInt res = *this;
     res.digits.insert(res.digits.begin(), shift, '0');
     res.removeZeros();
     return res;
 }
 
-bigint bigint::operator>>(unsigned int shift) const
+BigInt BigInt::operator>>(unsigned int shift) const
 {
     if(shift == 0)
         return *this;
 
-    bigint res = *this;
+    BigInt res = *this;
     if(res.digits.size() <= shift)
         res.digits = "0";
     else
@@ -168,19 +168,19 @@ bigint bigint::operator>>(unsigned int shift) const
     return res;
 }
 
-bigint& bigint::operator<<=(unsigned int shift)
+BigInt& BigInt::operator<<=(unsigned int shift)
 {
     *this = *this << shift;
     return *this;
 }
 
-bigint& bigint::operator>>=(unsigned int shift)
+BigInt& BigInt::operator>>=(unsigned int shift)
 {
     *this = *this >> shift;
     return *this;
 }
 
-bigint& bigint::operator<<=(const bigint& shift)
+BigInt& BigInt::operator<<=(const BigInt& shift)
 {
     std::string str = shift.getDigits();
     std::reverse(str.begin(), str.end());
@@ -197,7 +197,7 @@ bigint& bigint::operator<<=(const bigint& shift)
     return *this;
 }
 
-bigint& bigint::operator>>=(const bigint& shift)
+BigInt& BigInt::operator>>=(const BigInt& shift)
 {
     std::string str = shift.getDigits();
     std::reverse(str.begin(), str.end());
@@ -214,25 +214,25 @@ bigint& bigint::operator>>=(const bigint& shift)
     return *this;
 }
 
-bigint& bigint::operator++()
+BigInt& BigInt::operator++()
 {
-    *this += bigint(1);
+    *this += BigInt(1);
     return *this;
 }
 
-bigint bigint::operator++(int)
+BigInt BigInt::operator++(int)
 {
-    bigint res = *this;
-    *this += bigint(1);
+    BigInt res = *this;
+    *this += BigInt(1);
     return res;
 }
 
-std::string bigint::getDigits() const
+std::string BigInt::getDigits() const
 {
     return digits;
 }
 
-std::ostream& operator<<(std::ostream& out, const bigint& nbr)
+std::ostream& operator<<(std::ostream& out, const BigInt& nbr)
 {
     std::string str(nbr.getDigits());
     std::reverse(str.begin(), str.end());

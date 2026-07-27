@@ -1,11 +1,11 @@
-#include "bigint.hpp"
+#include "BigInt.hpp"
 
-// clear && c++ -g main.cpp bigint.cpp bigint.hpp && valgrind --leak-check=full --show-leak-kinds=all ./a.out
+// clear && c++ -g main.cpp BigInt.cpp BigInt.hpp && valgrind --leak-check=full --show-leak-kinds=all ./a.out
 int	main(void)
 {
 	{
-		const bigint	a(42);
-		bigint			b(21), c, d(1337), e(d);
+		const BigInt	a(42);
+		BigInt			b(21), c, d(1337), e(d);
 		
 		//All are in base10
 		std::cout << a << std::endl;
@@ -41,7 +41,7 @@ int	main(void)
 		std::cout << "(d <= a) = " << (d <= a) << std::endl;
 		std::cout << "(d >= a) = " << (d >= a) << std::endl;
 
-		bigint x(1234);
+		BigInt x(1234);
 		std::cout << std::endl;
 		std::cout << "\"(x << 2)\"--> " << (x << 2) << "\n";   // prints 123400
 		std::cout << "\"(x >>= 2)\"--> " << (x >>= 2) << "\n";   // prints   12}

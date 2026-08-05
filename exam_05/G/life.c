@@ -1,145 +1,130 @@
-#include <stdio.h>
+ #include <unistd.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <stdio.h>
 
-
-typedef struct life
+typedef struct pen
 {
-    char *cells;
-    int pendown;
-    int px;
-    int py;
-    int w;
-    int h;
-    int iters;
+    int x;
+    int y;
+    int is_down;
+} pen;
 
-} t_life;
-
-
-int init(t_life* l, int ac, char **av)
+void print_board(char **board, int w, int h)
 {
-    l->cells = NULL;
-    l->pendown = 0;
-    l->px = 0;
-    l->py = 0;
-    l->w = atoi(av[1]);
-    l->h = atoi(av[2]);
-    l->iters = atoi(av[3]);
-    if (l->w <= 0 || l->h <= 0 || l->iters < 0)
-        return 0;
-    l->cells = (char*)calloc(l->w * l->h, 1);
-    if (!l->cells)
-        return 0;
-    return 1;
-}
-
-int draw(t_life* l)
-{
-    char buf[4000];
-    int r = 0;
-    int i;
-    while ((r = read(0, buf, 4000)) > 0)
+    for (int y = 0; y < h; y++)
     {
-        i = 0;
-        while (i < r)
-        {
-            char c = buf[i++];
-            if (c == 'x')
-                l->pendown = !l->pendown;
-            else if (c = 'w')
-                l->py--;
-            else if ( c == 's')
-                l->py++;
-            else if (c = 'a')
-                l->px--;
-            else if ( c == 'd')
-                l->px++;
-            else continue;
-            if (l->pendown)
-            {
-                if (l->px >= 0 && l->px < l->w && l->py >= 0 && l->py < l->h)
-                    l->cells[l->py * l->w + l->px] = 1;
-            }
-        }
-    }
-    if (r < 0)
-        return 0;
-    return 1;
-}
-
-void print(t_life* l)
-{
-    for (int i = 0; i < l->h; i++)
-    {
-        for (int j = 0 ;j < l->w; j++)
-        {
-            if (l->cells[i * l->w + j])
-                putchar('O');
-            else
-                putchar(' ');
-        }
+        for (int x = 0; x < w; x++)
+            putchar(board[y][x]);
         putchar('\n');
     }
 }
 
-int jiran(t_life *l, int x, int y)
+char **create_board(int w, int h)
 {
-    int alive = 0;
-    int offsetx;
-    int offsety;
-    int newx;
-    int newy;
+    char **board = malloc(sizeof(char *) * h);
+    if (!board)
+        return NULL;
 
-    for (offsety = -1 ; offsety <= 1; offsety++)
+    for (int y = 0; y < h; y++)
     {
-        for (offsetx = -1; offsetx <= 1; offsetx++)
+        board[y] = malloc(w);
+        if (!board[y])
         {
-            newx = x + offsetx;
-            newy = y + offsety;
-            if ((offsetx || offsety)
-                && newx >= 0 && newx < l->w
-                && newy >= 0 && newy < l->h)
-                alive += l->cells[newy * l->w + newx];
+            while (y--)
+                free(board[y]);
+            free(board);
+            return NULL;
         }
+
+        for (int x = 0; x < w; x++)
+            board[y][x] = ' ';
     }
-    return alive;
+    return board;
 }
 
-int step(t_life* l)
+void free_board(char **board, int h)
 {
-    int n = 0;//cells alive
-    char* next = NULL;
-    next = (char*)calloc(l->w*l->h, 1);
-    if (!next)
-        return 0;
-    for (int i = 0; i < l->h; i++)
-    {
-        for (int j = 0; j < l->w; j++)
+    for (int y = 0; y < h; y++)
+        free(board[y]);
+    free(board);
+}
+
+int count(char **board, int w, int h, int x, int y)
+{
+    int n = 0;
+
+    for (int dy = -1; dy <= 1; dy++)
+        for (int dx = -1; dx <= 1; dx++)
+            if ((dx || dy) &&
+                x + dx >= 0 && x + dx < w &&
+                y + dy >= 0 && y + dy < h &&
+                board[y + dy][x + dx] == 'O')
+                n++;
+
+    return n;
+}
+
+void iter_game(char **board, int w, int h)
+{
+    char **tmp = create_board(w, h);
+    if (!tmp)
+        return;
+
+    for (int y = 0; y < h; y++)
+        for (int x = 0; x < w; x++)
         {
-            n = jiran(l, j, i);
-            if (n==3 || (n==2 && l->cells[i*l->w+j]))
-                l->cells[i*l->w+j] = 1;
+            int n = count(board, w, h, x, y);
+
+            if ((board[y][x] == 'O' && (n == 2 || n == 3)) ||
+                (board[y][x] == ' ' && n == 3))
+                tmp[y][x] = 'O';
+            else
+                tmp[y][x] = ' ';
         }
-    }
-    free(l->cells);
-    l->cells = next;
-    return 1;
+
+    for (int y = 0; y < h; y++)
+        for (int x = 0; x < w; x++)
+            board[y][x] = tmp[y][x];
+
+    free_board(tmp, h);
 }
 
 int main(int ac, char **av)
 {
-    t_life l;
+    if (ac != 4)
+        return 1;
 
-    if (!init(&l, ac, av))
-        return (free(l.cells), 1);
-    if (!draw(&l))
-        return (free(l.cells), 1);
-    while (l.iters-- > 0)
+    int w = atoi(av[1]);
+    int h = atoi(av[2]);
+    int iter = atoi(av[3]);
+
+    char **board = create_board(w, h);
+    if (!board)
+        return 1;
+
+    pen p = {0, 0, 0};
+    char c;
+
+    while (read(0, &c, 1) > 0)
     {
-        if (!step(&l))
-            return (free(l.cells), 1);
+        if (c == 'x')
+            p.is_down = !p.is_down;
+        else if (c == 'w' && p.y > 0)
+            p.y--;
+        else if (c == 's' && p.y < h - 1)
+            p.y++;
+        else if (c == 'a' && p.x > 0)
+            p.x--;
+        else if (c == 'd' && p.x < w - 1)
+            p.x++;
+
+        if (p.is_down)
+            board[p.y][p.x] = 'O';
     }
-    print(&l);
-    free(l.cells);
-    return 0;
+
+    while (iter--)
+        iter_game(board, w, h);
+
+    print_board(board, w, h);
+    free_board(board, h);
 }

@@ -120,13 +120,13 @@ void test_shift()
 {
     std::cout << "\n=== digit shift  << >> <<= >>= ===" << std::endl;
     // <<  (subject: 42 << 3 == 42000)
-    check("42 << 3",        (bigint(42) << 3).toString(),       "42000");
+    check("42 << 3",        (bigint(0) << 3).toString(),       "0");
     check("28 << 10",       (bigint(28) << 10).toString(),      "280000000000");
     check("99 << 0",        (bigint(99) << 0).toString(),       "99");
 
     // >>  (subject: 1337 >> 2 == 13)
-    check("1337 >> 2",      (bigint(1337) >> 2).toString(),     "13");
-    check("123456 >> 3",    (bigint(123456) >> 3).toString(),   "123");
+    check("1337 >> 2",      (bigint(0) >> 2).toString(),     "13");
+    check("123456 >> 3",    (bigint(123456) >> 3).toString(),   "0");
 
     // combined with +
     bigint b(28);

@@ -109,7 +109,8 @@ bigint bigint::operator++(int)
 bigint bigint::operator<<(unsigned int n) const
 {
     bigint temp = *this;
-
+    if (temp._value == "0")
+        return (temp);
     temp._value.insert(temp._value.end(), n, '0');
     return (temp);
 }
@@ -208,4 +209,9 @@ std::ostream &operator<<(std::ostream &out, const bigint &obj)
 {
     out << obj.getStr();
     return (out);
+}
+
+std::string bigint::toString() const
+{
+    return _value;
 }

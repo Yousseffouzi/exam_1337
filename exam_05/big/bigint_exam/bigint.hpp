@@ -46,6 +46,7 @@ public:
 	bool operator<=(const bigint &other) const;
 	bool operator>=(const bigint &other) const;
 
+	std::string toString() const;
 };
 
 std::ostream &operator<<(std::ostream &out, const bigint &obj);

@@ -46,11 +46,11 @@ int draw(t_life* l)
             char c = buf[i++];
             if (c == 'x')
                 l->pendown = !l->pendown;
-            else if (c = 'w')
+            else if (c == 'w')
                 l->py--;
             else if ( c == 's')
                 l->py++;
-            else if (c = 'a')
+            else if (c == 'a')
                 l->px--;
             else if ( c == 'd')
                 l->px++;
@@ -76,7 +76,7 @@ void print(t_life* l)
             if (l->cells[i * l->w + j])
                 putchar('O');
             else
-                putchar(' ');
+                putchar('-');
         }
         putchar('\n');
     }
@@ -118,7 +118,7 @@ int step(t_life* l)
         {
             n = jiran(l, j, i);
             if (n==3 || (n==2 && l->cells[i*l->w+j]))
-                l->cells[i*l->w+j] = 1;
+                next[i*l->w+j] = 1;
         }
     }
     free(l->cells);

@@ -2,40 +2,41 @@
 
 #include <iostream>
 #include <sstream>
+#include <string>
 
-class BigInt
+class bigint
 {
-    std::string value;
+    std::string str;
     public:
-        BigInt();
-        BigInt(const BigInt &other);
-        BigInt(const std::string &str);
-        BigInt &operator=(const BigInt &other);
-        BigInt(unsigned long n);
+        bigint();
+        bigint(const bigint &other);
+        bigint(unsigned int num);
+        bigint &operator=(const bigint &other);
+        ~bigint();
 
-        BigInt operator++(int);
-        BigInt &operator++();
+        bigint operator+(const bigint &other) const;
+        bigint &operator+=(const bigint &other);
 
-        BigInt operator+(const BigInt &other) const;
-        BigInt &operator+=(const BigInt &other);
+        bigint operator++(int);
+        bigint &operator++();
 
-        BigInt operator>>(unsigned int n) const;
-        BigInt operator<<(unsigned int n) const;
-        BigInt &operator>>=(unsigned int n);
-        BigInt &operator<<=(unsigned int n);
+        bigint operator>>(unsigned int shift) const;
+        bigint operator<<(unsigned int shift) const;
+        bigint &operator>>=(unsigned int shift);
+        bigint &operator<<=(unsigned int shift);
 
-        BigInt operator>>(const BigInt &other) const;
-        BigInt operator<<(const BigInt &other) const;
-        BigInt &operator>>=(const BigInt &other);
-        BigInt &operator<<=(const BigInt &other);
+        bigint operator>>(const bigint &other) const;
+        bigint operator<<(const bigint &other) const;
+        bigint &operator>>=(const bigint &other);
+        bigint &operator<<=(const bigint &other);
 
-        bool operator==(const BigInt &other) const;
-        bool operator!=(const BigInt &other) const;
-        bool operator>(const BigInt &other) const;
-        bool operator<(const BigInt &other) const;
-        bool operator>=(const BigInt &other) const;
-        bool operator<=(const BigInt &other) const;
-
-        std::string getValue() const;
+        bool operator>(const bigint &other) const;
+        bool operator<(const bigint &other) const;
+        bool operator>=(const bigint &other) const;
+        bool operator<=(const bigint &other) const;
+        bool operator==(const bigint &other) const;
+        bool operator!=(const bigint &other) const;
+        
+        std::string getStr() const;
 };
-std::ostream &operator<<(std::ostream &os, const BigInt &value);
+std::ostream &operator<<(std::ostream &os, const bigint &v);

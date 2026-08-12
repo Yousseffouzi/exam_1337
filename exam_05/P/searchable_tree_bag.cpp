@@ -12,19 +12,17 @@ searchable_tree_bag &searchable_tree_bag::operator=(const searchable_tree_bag &o
 }
 searchable_tree_bag::~searchable_tree_bag()
 {}
-
 bool searchable_tree_bag::has(int item) const
 {
-    node *search = tree;
-
-    while (search)
+    node* current = tree;
+    while (current)
     {
-        if(item == search->value)
+        if (current->value == item)
             return true;
-        else if(search->value < item)
-            search = search->r;
+        if (current->value > item)
+            current = current->l;
         else
-            search = search->l;
+            current = current->r;
     }
     return false;
 }

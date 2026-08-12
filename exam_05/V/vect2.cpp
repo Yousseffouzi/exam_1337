@@ -1,32 +1,34 @@
 #include "vect2.hpp"
-
-vect2::vect2() : x(0) , y(0)
+    
+    
+vect2::vect2(): x(0), y(0)
 {}
-vect2::vect2(int x, int y) : x(x) , y(y) 
+vect2::vect2(int x, int y): x(x), y(y)
 {}
-vect2::vect2(const vect2 &other)
+vect2::~vect2()
+{}
+vect2::vect2(const vect2 &other) : x(other.x), y(other.y)
+{}
+vect2 &vect2::operator=(const vect2 &other)
 {
-    if(this != &other){
+    if(this != &other)
+    {
         x = other.x;
         y = other.y;
     }
-}
-vect2 &vect2::operator=(const vect2 &other)
-{
-    x = other.x;
-    y = other.y;
+    return *this;
 }
 
 int &vect2::operator[](int index)
 {
-    if (index == 0)
+    if(index == 0)
         return x;
     else
         return y;
 }
 const int &vect2::operator[](int index) const
 {
-    if (index == 0)
+    if(index == 0)
         return x;
     else
         return y;
@@ -41,8 +43,16 @@ vect2 &vect2::operator++()
 vect2 vect2::operator++(int)
 {
     vect2 tmp = *this;
-    ++(*this);
-    return tmp; 
+    x++;
+    y++;
+    return tmp;
+}
+vect2 vect2::operator--(int)
+{
+    vect2 tmp = *this;
+    x--;
+    y--;
+    return tmp;
 }
 vect2 &vect2::operator--()
 {
@@ -50,57 +60,46 @@ vect2 &vect2::operator--()
     y--;
     return *this;
 }
-vect2 vect2::operator--(int)
-{
-    vect2 tmp = *this;
-    --(*this);
-    return tmp; 
-}
 
 vect2 vect2::operator+(const vect2 &other) const
 {
     vect2 tmp = *this;
-    tmp.x + other.x;
-    tmp.y + other.y;
+    tmp.x += other.x;
+    tmp.y += other.y;
     return tmp;
 }
 vect2 vect2::operator-(const vect2 &other) const
 {
-    vect2 tmp = *this;
-    tmp.x - other.x;
-    tmp.y - other.y;
-    return tmp;
+    return (vect2(x - other.x , y - other.y));
+
 }
-vect2 vect2::operator*(int carry) const
+vect2 vect2::operator*(int m) const
 {
-    vect2 tmp = *this;
-    tmp.x * carry;
-    tmp.y * carry;
-    return tmp;
+    return (vect2(x * m , y * m));
 }
 
 vect2 &vect2::operator+=(const vect2 &other)
 {
     x += other.x;
     y += other.y;
-    return (*this);
+    return *this;
 }
 vect2 &vect2::operator-=(const vect2 &other)
 {
     x -= other.x;
     y -= other.y;
-    return (*this);
+    return *this;
 }
-vect2 &vect2::operator*=(int carry)
+vect2 &vect2::operator*=(int m)
 {
-    x *= carry;
-    y *= carry;
-    return (*this);
+    x *= m;
+    y *= m;
+    return *this;
 }
 
 vect2 vect2::operator-() const
 {
-    return (vect2(-x, -y));
+    return (vect2(-x , -y));
 }
 
 bool vect2::operator==(const vect2 &other) const
@@ -114,10 +113,10 @@ bool vect2::operator!=(const vect2 &other) const
 
 std::ostream &operator<<(std::ostream &os, const vect2 &v)
 {
-    os << "{" << v[0] << ", " << v[1] << "}" << std::endl;
+    os << "{" << v[0] << ", " << v[1] << "}";
     return os;
 }
-vect2   operator*(int carry, const vect2 &v)
+vect2 operator*(int m, const vect2 &v)
 {
-    return v * carry;
+    return v * m;
 }

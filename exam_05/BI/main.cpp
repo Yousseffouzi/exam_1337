@@ -1,244 +1,409 @@
 #include "BigInt.hpp"
+#include <iostream>
+
+// static int passed = 0;
+// static int failed = 0;
+
+// static void check(const char *name, const bigint &got, const char *expected)
+// {
+//     if (got.getStr() == expected)
+//     {
+//         std::cout << "[OK]   " << name
+//                   << " -> " << got << std::endl;
+//         ++passed;
+//     }
+//     else
+//     {
+//         std::cout << "[FAIL] " << name
+//                   << " -> got: " << got
+//                   << " expected: " << expected << std::endl;
+//         ++failed;
+//     }
+// }
+
+// static void checkBool(const char *name, bool got, bool expected)
+// {
+//     if (got == expected)
+//     {
+//         std::cout << "[OK]   " << name << std::endl;
+//         ++passed;
+//     }
+//     else
+//     {
+//         std::cout << "[FAIL] " << name
+//                   << " -> got: " << got
+//                   << " expected: " << expected << std::endl;
+//         ++failed;
+//     }
+// }
 
 // int main()
 // {
-//     BigInt a("42");
-//     BigInt b(21), c, d(1337), e(d);
+//     std::cout << "\n========== CONSTRUCTORS ==========\n";
 
-//     std::cout << "a = " << a << std::endl;
-//     std::cout << "b = " << b << std::endl;
-//     std::cout << "c = " << c << std::endl;
-//     std::cout << "d = " << d << std::endl;
-//     std::cout << "e = " << e << std::endl;
+//     check("default constructor",
+//           bigint(), "0");
 
-//     std::cout << "a + b = " << a + b << std::endl;
-//     std::cout << "(c += a) = " << (c += a) << std::endl;
+//     check("unsigned constructor",
+//           bigint(42), "42");
 
-//     std::cout << "b = " << b << std::endl;
-//     std::cout << "++b = " << ++b << std::endl;
-//     std::cout << "b++ = " << b++ << std::endl;
+//     bigint a(123456789);
+//     bigint b(a);
 
-//     std::cout << "(b << 10) + 42 = " << ((b << 10) + 42) << std::endl;
-//     std::cout << "(d <<= 4) = " << (d <<= 4) << std::endl;
-//     std::cout << "(d >>= 2) = " << (d >>= (const BigInt)2) << std::endl;
+//     check("copy constructor",
+//           b, "123456789");
 
-//     std::cout << "a =" << a << std::endl;
-//     std::cout << "d =" << d << std::endl;
+//     bigint c;
+//     c = a;
 
-//     std::cout << "(d < a) = " << (d < a) << std::endl;
-//     std::cout << "(d <= a) = " << (d <= a) << std::endl;
-//     std::cout << "(d > a) = " << (d > a) << std::endl;
-//     std::cout << "(d >= a) = " << (d >= a) << std::endl;
-//     std::cout << "(d == a) = " << (d == a) << std::endl;
-//     std::cout << "(d != a) = " << (d != a) << std::endl;
+//     check("assignment operator",
+//           c, "123456789");
+
+//     c = c;
+
+//     check("self assignment",
+//           c, "123456789");
+
+
+//     std::cout << "\n========== ADDITION ==========\n";
+
+//     check("1 + 1",
+//           bigint(1) + bigint(1), "2");
+
+//     check("42 + 58",
+//           bigint(42) + bigint(58), "100");
+
+//     check("999 + 1",
+//           bigint(999) + bigint(1), "1000");
+
+//     check("9999 + 1",
+//           bigint(9999) + bigint(1), "10000");
+
+//     check("123456789 + 987654321",
+//           bigint(123456789) + bigint(987654321), "1111111110");
+
+//     check("999999999 + 999999999",
+//           bigint(999999999) + bigint(999999999), "1999999998");
+
+
+//     std::cout << "\n========== += ==========\n";
+
+//     bigint add(100);
+
+//     add += bigint(23);
+
+//     check("100 += 23",
+//           add, "123");
+
+//     add += bigint(877);
+
+//     check("123 += 877",
+//           add, "1000");
+
+
+//     std::cout << "\n========== PREFIX ++ ==========\n";
+
+//     bigint pre(999);
+
+//     ++pre;
+
+//     check("++999",
+//           pre, "1000");
+
+//     ++pre;
+
+//     check("++1000",
+//           pre, "1001");
+
+
+//     std::cout << "\n========== POSTFIX ++ ==========\n";
+
+//     bigint post(999);
+
+//     bigint old = post++;
+
+//     check("postfix returned value",
+//           old, "999");
+
+//     check("postfix incremented object",
+//           post, "1000");
+
+
+//     std::cout << "\n========== LEFT SHIFT ==========\n";
+
+//     check("42 << 0",
+//           bigint(42) << 0u, "42");
+
+//     check("42 << 1",
+//           bigint(42) << 1u, "420");
+
+//     check("42 << 3",
+//           bigint(42) << 3u, "42000");
+
+//     check("1337 << 2",
+//           bigint(1337) << 2u, "133700");
+
+//     check("1 << 10",
+//           bigint(1) << 10u, "10000000000");
+
+//     check("0 << 100",
+//           bigint(0) << 100u, "0");
+
+
+//     std::cout << "\n========== RIGHT SHIFT ==========\n";
+
+//     check("42 >> 0",
+//           bigint(42) >> 0u, "42");
+
+//     check("42 >> 1",
+//           bigint(42) >> 1u, "4");
+
+//     check("42 >> 2",
+//           bigint(42) >> 2u, "0");
+
+//     check("1337 >> 1",
+//           bigint(1337) >> 1u, "133");
+
+//     check("1337 >> 2",
+//           bigint(1337) >> 2u, "13");
+
+//     check("1337 >> 3",
+//           bigint(1337) >> 3u, "1");
+
+//     check("1337 >> 4",
+//           bigint(1337) >> 4u, "0");
+
+//     check("123456789 >> 5",
+//           bigint(123456789) >> 5u, "1234");
+
+//     check("123 >> 100",
+//           bigint(123) >> 100u, "0");
+
+
+//     std::cout << "\n========== <<= ==========\n";
+
+//     bigint leftAssign(42);
+
+//     leftAssign <<= 3u;
+
+//     check("42 <<= 3",
+//           leftAssign, "42000");
+
+//     leftAssign <<= 2u;
+
+//     check("42000 <<= 2",
+//           leftAssign, "4200000");
+
+
+//     std::cout << "\n========== >>= ==========\n";
+
+//     bigint rightAssign(4200000);
+
+//     rightAssign >>= 2u;
+
+//     check("4200000 >>= 2",
+//           rightAssign, "42000");
+
+//     rightAssign >>= 3u;
+
+//     check("42000 >>= 3",
+//           rightAssign, "42");
+
+//     rightAssign >>= 2u;
+
+//     check("42 >>= 2",
+//           rightAssign, "0");
+
+
+//     std::cout << "\n========== BIGINT SHIFT OPERAND ==========\n";
+
+//     bigint value(123456);
+//     bigint shift2(2);
+
+//     check("123456 << bigint(2)",
+//           value << shift2, "12345600");
+
+//     check("123456 >> bigint(2)",
+//           value >> shift2, "1234");
+
+//     bigint valueLeft(1234);
+//     bigint shift3(3);
+
+//     valueLeft <<= shift3;
+
+//     check("1234 <<= bigint(3)",
+//           valueLeft, "1234000");
+
+//     bigint valueRight(1234000);
+
+//     valueRight >>= shift3;
+
+//     check("1234000 >>= bigint(3)",
+//           valueRight, "1234");
+
+
+//     std::cout << "\n========== SHIFT OBJECT PRESERVATION ==========\n";
+
+//     bigint original(12345);
+
+//     bigint shiftedLeft = original << 3u;
+//     bigint shiftedRight = original >> 2u;
+
+//     check("original after <<",
+//           original, "12345");
+
+//     check("result of <<",
+//           shiftedLeft, "12345000");
+
+//     check("original after >>",
+//           original, "12345");
+
+//     check("result of >>",
+//           shiftedRight, "123");
+
+
+//     std::cout << "\n========== ZERO ==========\n";
+
+//     bigint zero(0);
+
+//     check("zero",
+//           zero, "0");
+
+//     check("zero + zero",
+//           zero + zero, "0");
+
+//     check("zero + 42",
+//           zero + bigint(42), "42");
+
+//     check("42 + zero",
+//           bigint(42) + zero, "42");
+
+//     check("zero << 10",
+//           zero << 10u, "0");
+
+//     check("zero >> 10",
+//           zero >> 10u, "0");
+
+
+//     std::cout << "\n========== COMPARISONS ==========\n";
+
+//     bigint ten(10);
+//     bigint twenty(20);
+//     bigint tenAgain(10);
+
+//     checkBool("10 < 20", ten < twenty, true);
+//     checkBool("20 > 10", twenty > ten, true);
+
+//     checkBool("10 <= 20", ten <= twenty, true);
+//     checkBool("20 >= 10", twenty >= ten, true);
+
+//     checkBool("10 == 10", ten == tenAgain, true);
+//     checkBool("10 != 20", ten != twenty, true);
+
+//     checkBool("10 <= 10", ten <= tenAgain, true);
+//     checkBool("10 >= 10", ten >= tenAgain, true);
+
+//     checkBool("10 not > 20", ten > twenty, false);
+//     checkBool("20 not < 10", twenty < ten, false);
+
+
+//     std::cout << "\n========== COMPARISON BY LENGTH ==========\n";
+
+//     checkBool("9 < 10",
+//               bigint(9) < bigint(10), true);
+
+//     checkBool("10 > 9",
+//               bigint(10) > bigint(9), true);
+
+//     checkBool("99 < 100",
+//               bigint(99) < bigint(100), true);
+
+//     checkBool("100 > 99",
+//               bigint(100) > bigint(99), true);
+
+
+//     std::cout << "\n========== COMPARISON SAME LENGTH ==========\n";
+
+//     checkBool("123 < 124",
+//               bigint(123) < bigint(124), true);
+
+//     checkBool("124 > 123",
+//               bigint(124) > bigint(123), true);
+
+//     checkBool("123 == 123",
+//               bigint(123) == bigint(123), true);
+
+//     checkBool("123 != 124",
+//               bigint(123) != bigint(124), true);
+
+
+//     std::cout << "\n========== COMPOUND OPERATIONS ==========\n";
+
+//     bigint compound(42);
+
+//     compound <<= 3u;
+//     compound += bigint(1337);
+//     compound >>= 2u;
+//     ++compound;
+
+//     check("42 <<= 3, += 1337, >>= 2, ++",
+//           compound, "1084");
+
+
+//     std::cout << "\n========== CHAINING ==========\n";
+
+//     bigint chain =
+//         ((bigint(10) + bigint(20)) << 2u) >> 1u;
+
+//     check("(10 + 20) << 2 >> 1",
+//           chain, "150");
+
+
+//     std::cout << "\n========== LARGE NUMBER ==========\n";
+
+//     bigint huge(1);
+
+//     huge <<= 100u;
+
+//     check("1 << 100 length",
+//           bigint(huge.getStr().length()), "101");
+
+//     check("1 << 100",
+//           huge,
+//           "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+
+//     std::cout << "\n========== LARGE ADDITION ==========\n";
+
+//     bigint big1(999999999);
+//     bigint big2(999999999);
+
+//     check("999999999 + 999999999",
+//           big1 + big2, "1999999998");
+
+
+//     std::cout << "\n========== OUTPUT OPERATOR ==========\n";
+
+//     std::cout << "operator<< output: ";
+//     std::cout << bigint(123456789) << std::endl;
+
+//     check("getStr()",
+//           bigint(123456789), "123456789");
+
+
+//     std::cout << "\n";
+//     std::cout << "========================================\n";
+//     std::cout << "              FINAL RESULT\n";
+//     std::cout << "========================================\n";
+//     std::cout << "Total  : " << passed + failed << std::endl;
+//     std::cout << "Passed : " << passed << std::endl;
+//     std::cout << "Failed : " << failed << std::endl;
+//     std::cout << "========================================\n";
+
+//     if (failed == 0)
+//         std::cout << "        ALL TESTS PASSED!\n";
+//     else
+//         std::cout << "        SOME TESTS FAILED!\n";
+
+//     return failed == 0 ? 0 : 1;
 // }
-
-
-static int passed = 0;
-static int failed = 0;
-
-void check(const std::string &name, const BigInt &got, const BigInt &expected)
-{
-    if (got == expected)
-    {
-        ++passed;
-        std::cout << "[PASS] " << name << '\n';
-    }
-    else
-    {
-        ++failed;
-        std::cout << "[FAIL] " << name
-                  << "\n  Expected: " << expected
-                  << "\n  Got     : " << got << "\n\n";
-    }
-}
-
-void checkBool(const std::string &name, bool got, bool expected)
-{
-    if (got == expected)
-    {
-        ++passed;
-        std::cout << "[PASS] " << name << '\n';
-    }
-    else
-    {
-        ++failed;
-        std::cout << "[FAIL] " << name
-                  << "\n  Expected: " << expected
-                  << "\n  Got     : " << got << "\n\n";
-    }
-}
-
-int main()
-{
-    // ================= Constructors =================
-    check("Default constructor", BigInt(), BigInt("0"));
-    check("Unsigned long constructor", BigInt(42), BigInt("42"));
-    check("Leading zeros", BigInt("00000123"), BigInt("123"));
-    check("Only zeros", BigInt("000000"), BigInt("0"));
-    check("Invalid string", BigInt("12ab"), BigInt("0"));
-    check("Empty string", BigInt(""), BigInt("0"));
-
-    // ================= Leading Zero Tests =================
-    check("0000", BigInt("0000"), BigInt("0"));
-    check("000000", BigInt("000000"), BigInt("0"));
-    check("000123", BigInt("000123"), BigInt("123"));
-    check("0012300", BigInt("0012300"), BigInt("12300"));
-    check("000000001", BigInt("000000001"), BigInt("1"));
-
-    // ================= Copy / Assignment =================
-    BigInt a("123456");
-    BigInt b(a);
-    check("Copy constructor", b, BigInt("123456"));
-
-    BigInt c;
-    c = a;
-    check("Assignment", c, BigInt("123456"));
-
-    c = c;
-    check("Self assignment", c, BigInt("123456"));
-
-    // ================= Addition =================
-    check("0 + 0", BigInt("0") + BigInt("0"), BigInt("0"));
-    check("1 + 1", BigInt("1") + BigInt("1"), BigInt("2"));
-    check("9 + 1", BigInt("9") + BigInt("1"), BigInt("10"));
-    check("99 + 1", BigInt("99") + BigInt("1"), BigInt("100"));
-    check("999 + 1", BigInt("999") + BigInt("1"), BigInt("1000"));
-    check("12345 + 67890", BigInt("12345") + BigInt("67890"), BigInt("80235"));
-    check("Large addition",
-          BigInt("999999999999999999999999") + BigInt("1"),
-          BigInt("1000000000000000000000000"));
-
-    // ================= Addition + Leading Zeros =================
-    check("0005 + 0007", BigInt("0005") + BigInt("0007"), BigInt("12"));
-    check("0000 + 0000", BigInt("0000") + BigInt("0000"), BigInt("0"));
-    check("000999 + 1", BigInt("000999") + BigInt("1"), BigInt("1000"));
-    check("000123 + 000877", BigInt("000123") + BigInt("000877"), BigInt("1000"));
-
-    // ================= += =================
-    BigInt d("50");
-    d += BigInt("25");
-    check("operator+=", d, BigInt("75"));
-
-    d += BigInt("0");
-    check("+= zero", d, BigInt("75"));
-
-    // ================= Prefix ++ =================
-    BigInt e("9");
-    ++e;
-    check("Prefix ++", e, BigInt("10"));
-
-    BigInt f("999");
-    ++f;
-    check("Prefix ++ carry", f, BigInt("1000"));
-
-    // ================= Postfix ++ =================
-    BigInt g("9");
-    BigInt old = g++;
-    check("Postfix returned value", old, BigInt("9"));
-    check("Postfix object value", g, BigInt("10"));
-
-    // ================= Left Shift =================
-    check("42 << 0", BigInt("42") << 0, BigInt("42"));
-    check("42 << 3", BigInt("42") << 3, BigInt("42000"));
-    check("0 << 5", BigInt("0") << 5, BigInt("0"));
-
-    // ================= Left Shift + Leading Zeros =================
-    check("00042 << 3", BigInt("00042") << 3, BigInt("42000"));
-    check("0000 << 5", BigInt("0000") << 5, BigInt("0"));
-
-    // ================= Right Shift =================
-    check("1337 >> 2", BigInt("1337") >> 2, BigInt("13"));
-    check("123 >> 0", BigInt("123") >> 0, BigInt("123"));
-    check("123 >> 3", BigInt("123") >> 3, BigInt("0"));
-    check("123 >> 10", BigInt("123") >> 10, BigInt("0"));
-
-    // ================= Right Shift + Leading Zeros =================
-    check("00012345 >> 2", BigInt("00012345") >> 2, BigInt("123"));
-    check("0000 >> 3", BigInt("0000") >> 3, BigInt("0"));
-    check("000123 >> 10", BigInt("000123") >> 10, BigInt("0"));
-
-    // ================= Shift by BigInt =================
-    check("42 << BigInt(2)", BigInt("42") << BigInt("2"), BigInt("4200"));
-    check("12345 >> BigInt(3)", BigInt("12345") >> BigInt("3"), BigInt("12"));
-
-    // ================= <<= =================
-    BigInt h("42");
-    h <<= 3;
-    check("operator<<=", h, BigInt("42000"));
-
-    BigInt i("0");
-    i <<= 5;
-    check("operator<<= zero", i, BigInt("0"));
-
-    // ================= >>= =================
-    BigInt j("12345");
-    j >>= 2;
-    check("operator>>=", j, BigInt("123"));
-
-    BigInt k("5");
-    k >>= 10;
-    check("operator>>= to zero", k, BigInt("0"));
-
-    // ================= Comparisons =================
-    checkBool("5 == 5", BigInt("5") == BigInt("5"), true);
-    checkBool("5 == 6", BigInt("5") == BigInt("6"), false);
-
-    checkBool("5 != 6", BigInt("5") != BigInt("6"), true);
-    checkBool("5 != 5", BigInt("5") != BigInt("5"), false);
-
-    checkBool("5 < 6", BigInt("5") < BigInt("6"), true);
-    checkBool("6 < 5", BigInt("6") < BigInt("5"), false);
-    checkBool("5 < 5", BigInt("5") < BigInt("5"), false);
-
-    checkBool("6 > 5", BigInt("6") > BigInt("5"), true);
-    checkBool("5 > 6", BigInt("5") > BigInt("6"), false);
-    checkBool("5 > 5", BigInt("5") > BigInt("5"), false);
-
-    checkBool("5 <= 5", BigInt("5") <= BigInt("5"), true);
-    checkBool("5 <= 6", BigInt("5") <= BigInt("6"), true);
-    checkBool("6 <= 5", BigInt("6") <= BigInt("5"), false);
-
-    checkBool("5 >= 5", BigInt("5") >= BigInt("5"), true);
-    checkBool("6 >= 5", BigInt("6") >= BigInt("5"), true);
-    checkBool("5 >= 6", BigInt("5") >= BigInt("6"), false);
-
-    // ================= Different Lengths =================
-    checkBool("999 < 1000", BigInt("999") < BigInt("1000"), true);
-    checkBool("1000 > 999", BigInt("1000") > BigInt("999"), true);
-    checkBool("1000 >= 999", BigInt("1000") >= BigInt("999"), true);
-    checkBool("999 <= 1000", BigInt("999") <= BigInt("1000"), true);
-
-    // ================= Same Lengths =================
-    checkBool("1234 < 1235", BigInt("1234") < BigInt("1235"), true);
-    checkBool("1235 > 1234", BigInt("1235") > BigInt("1234"), true);
-    checkBool("1234 <= 1234", BigInt("1234") <= BigInt("1234"), true);
-    checkBool("1234 >= 1234", BigInt("1234") >= BigInt("1234"), true);
-
-    // ================= Comparisons + Leading Zeros =================
-    checkBool("0005 == 5", BigInt("0005") == BigInt("5"), true);
-    checkBool("0005 != 5", BigInt("0005") != BigInt("5"), false);
-    checkBool("0005 < 6", BigInt("0005") < BigInt("6"), true);
-    checkBool("0006 > 5", BigInt("0006") > BigInt("5"), true);
-    checkBool("0000 == 0", BigInt("0000") == BigInt("0"), true);
-    checkBool("0000 <= 0", BigInt("0000") <= BigInt("0"), true);
-    checkBool("0000 >= 0", BigInt("0000") >= BigInt("0"), true);
-    checkBool("000123 > 000122", BigInt("000123") > BigInt("000122"), true);
-    checkBool("000122 < 000123", BigInt("000122") < BigInt("000123"), true);
-
-    // ================= Summary =================
-    std::cout << "\n========================================\n";
-    std::cout << "Total Tests : " << passed + failed << '\n';
-    std::cout << "Passed      : " << passed << '\n';
-    std::cout << "Failed      : " << failed << '\n';
-
-    if (failed == 0)
-        std::cout << "\n🎉 ALL TESTS PASSED!\n";
-    else
-        std::cout << "\n❌ Some tests failed.\n";
-
-    std::cout << "========================================\n";
-
-    return failed == 0 ? 0 : 1;
-}
-

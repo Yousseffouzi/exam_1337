@@ -1,130 +1,120 @@
- #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 typedef struct pen
 {
     int x;
     int y;
     int is_down;
-} pen;
+}pen;
 
-void print_board(char **board, int w, int h)
+char **creat_b(int w, int h)
 {
-    for (int y = 0; y < h; y++)
-    {
-        for (int x = 0; x < w; x++)
-            putchar(board[y][x]);
-        putchar('\n');
-    }
-}
-
-char **create_board(int w, int h)
-{
-    char **board = malloc(sizeof(char *) * h);
-    if (!board)
+    char **board = malloc(sizeof (char *) * h);
+    if(!board)
         return NULL;
-
-    for (int y = 0; y < h; y++)
+    for (int j = 0; j < h; j++)
     {
-        board[y] = malloc(w);
-        if (!board[y])
+        board[j] = malloc(w);
+        if(!board[j])
         {
-            while (y--)
-                free(board[y]);
+            while(j--)
+                free(board[j]);
             free(board);
             return NULL;
         }
-
-        for (int x = 0; x < w; x++)
-            board[y][x] = ' ';
+        for (int i = 0; i < w; i++)
+            board[j][i] = ' ';
     }
     return board;
 }
 
-void free_board(char **board, int h)
+void f_board(char **board, int h)
 {
-    for (int y = 0; y < h; y++)
-        free(board[y]);
+    for (int j = 0; j < h; j++)
+        free(board[j]);
     free(board);
 }
 
 int count(char **board, int w, int h, int x, int y)
 {
     int n = 0;
-
-    for (int dy = -1; dy <= 1; dy++)
-        for (int dx = -1; dx <= 1; dx++)
-            if ((dx || dy) &&
-                x + dx >= 0 && x + dx < w &&
-                y + dy >= 0 && y + dy < h &&
-                board[y + dy][x + dx] == 'O')
+    for (int j = -1; j < 2; j++){
+        for (int i = -1; i < 2; i++){
+            if((i || j) &&
+                (j + y > -1 && j + y < h) &&
+                (i + x > -1 && i + x < w) &&
+                board[j + y][i + x] == 'O')
                 n++;
-
+        }
+    }
     return n;
 }
 
-void iter_game(char **board, int w, int h)
+void iter(char **board, int w, int h)
 {
-    char **tmp = create_board(w, h);
-    if (!tmp)
+    char **tmp = creat_b(w, h);
+    if(!tmp)
         return;
-
-    for (int y = 0; y < h; y++)
-        for (int x = 0; x < w; x++)
-        {
-            int n = count(board, w, h, x, y);
-
-            if ((board[y][x] == 'O' && (n == 2 || n == 3)) ||
-                (board[y][x] == ' ' && n == 3))
-                tmp[y][x] = 'O';
+    for (int j = 0; j < h; j++){
+        for (int i = 0; i < w; i++){
+            int n = count(board, w, h, i, j);
+            if(board[j][i] == 'O' && ((n == 2) || n == 3) || 
+                (board[j][i] == ' ' && (n == 3)))
+                tmp[j][i] = 'O';
             else
-                tmp[y][x] = ' ';
+                tmp[j][i] = ' ';
         }
+    }
+    for (int j = 0; j < h; j++){
+        for (int i = 0; i < w; i++){
+           board[j][i] = tmp[j][i]; 
+        }
+    }
+    f_board(tmp , h);
+}
 
-    for (int y = 0; y < h; y++)
-        for (int x = 0; x < w; x++)
-            board[y][x] = tmp[y][x];
-
-    free_board(tmp, h);
+void p_board(char **board, int w, int h)
+{
+    for (int j = 0; j < h; j++){
+        for (int i = 0; i < w; i++){
+            putchar(board[j][i]);
+        }
+        putchar('\n');
+    }
 }
 
 int main(int ac, char **av)
 {
-    if (ac != 4)
+    if(ac != 4)
         return 1;
-
     int w = atoi(av[1]);
     int h = atoi(av[2]);
-    int iter = atoi(av[3]);
+    int i = atoi(av[3]);
 
-    char **board = create_board(w, h);
-    if (!board)
+    char **board = creat_b(w, h);
+    if(!board)
         return 1;
-
-    pen p = {0, 0, 0};
     char c;
-
+    pen p = {0, 0, 0};
     while (read(0, &c, 1) > 0)
     {
-        if (c == 'x')
+        if(c == 'x')
             p.is_down = !p.is_down;
         else if (c == 'w' && p.y > 0)
             p.y--;
-        else if (c == 's' && p.y < h - 1)
+        else if (c == 's' && p.y <  h - 1)
             p.y++;
         else if (c == 'a' && p.x > 0)
             p.x--;
-        else if (c == 'd' && p.x < w - 1)
+        else if (c == 'd' && p.x <  w - 1)
             p.x++;
-
-        if (p.is_down)
+        if(p.is_down)
             board[p.y][p.x] = 'O';
     }
-
-    while (iter--)
-        iter_game(board, w, h);
-
-    print_board(board, w, h);
-    free_board(board, h);
+    while (i--)
+        iter(board, w, h);
+    p_board(board, w, h);
+    f_board(board, h);
 }

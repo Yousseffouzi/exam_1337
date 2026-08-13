@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int main(int argc, char **argv)
+int main(int ac, char **av)
 {
-	if (argc != 4)
+	if (ac != 4)
 		return 1;
 
-	int w = atoi(argv[1]);
-	int h = atoi(argv[2]);
-	int ret = atoi(argv[3]);
+	int w = atoi(av[1]);
+	int h = atoi(av[2]);
+	int ret = atoi(av[3]);
 	int x = 0, y = 0, pen = 0;
 	char c;
 	int board[h][w];
@@ -42,11 +42,11 @@ int main(int argc, char **argv)
 			for (int j = 0; j < w; j++)
 			{
 				int n = 0;
-				for (int di = -1; di <= 1; di++)
+				for (int y = -1; y <= 1; y++)
 				{
-					for (int dj = -1; dj <= 1; dj++)
-						if ((di || dj) && i + di >= 0 && i + di < h && j + dj >= 0 && j + dj < w)
-							n += board[i + di][j + dj];
+					for (int x = -1; x <= 1; x++)
+						if ((y || x) && i + y > -1 && i + y < h && j + x > -1 && j + x < w)
+							n += board[i + y][j + x];
 				}
 				if (board[i][j])
 					next[i][j] = (n == 2 || n == 3);

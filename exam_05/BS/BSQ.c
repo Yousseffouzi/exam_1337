@@ -29,7 +29,7 @@ void f_map()
 
 int read_map(FILE *f)
 {
-    if (fscanf(f, "%d %c %c %c \n", &g.h, &g.empty, &g.obsta, &g.draw) != 4 || 
+    if (fscanf(f, "%d%c%c%c ", &g.h, &g.empty, &g.obsta, &g.draw) != 4 || 
         g.h <= 0 ||
         g.empty == g.obsta || g.obsta == g.draw || g.empty == g.draw)
         return 1;
@@ -94,7 +94,7 @@ void    run(FILE *f)
     g.w = -1;
     if(!f || read_map(f))
     {
-        fprintf(stderr, "map error\n");
+        fprintf(stdout, "Error: Invalid map\n");
         return ;
     }
     find_bsq();
@@ -102,19 +102,14 @@ void    run(FILE *f)
     f_map();
 }
 
-
-//int main check ac either stdin or a file 
 int main(int ac, char **av)
 {
     if (ac == 1)
         run(stdin);
     else
-    for (int i = 1; i < ac ; i++)
-    {
-        FILE *f = fopen(av[i], "r");
+        FILE *f = fopen(av[1], "r");
         run(f);
         if(f)
             fclose(f);
-    }
     return 0;
 }

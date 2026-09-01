@@ -107,9 +107,11 @@ int main(int ac, char **av)
     if (ac == 1)
         run(stdin);
     else
+    {
         FILE *f = fopen(av[1], "r");
         run(f);
         if(f)
             fclose(f);
+    }
     return 0;
 }

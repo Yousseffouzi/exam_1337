@@ -15,9 +15,12 @@ int main(int ac, char **av)
 	int board[h][w];
 	int next[h][w];
 
-	for (int i = 0; i < h; i++)
-		for (int j = 0; j < w; j++)
+	for (int i = 0; i < h; i++){
+		for (int j = 0; j < w; j++){
 			board[i][j] = 0;
+			next[i][j] = 0;
+		}
+	}
 
 	while (read(0, &c, 1) == 1)
 	{
